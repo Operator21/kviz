@@ -5,7 +5,7 @@
         <title>Document</title>       
     </head>
     <body>
-        <div id="wrongAnswers"></div>
+        <div id="Choices"></div>
         <div id="wrong"></div>
         <script>
             function Question(question, answers, correctanswer) {
@@ -41,12 +41,12 @@
                 //console.log(question.question);
                 var questionHeading = document.createElement("h3");
                 questionHeading.innerText = question.question + "[" + question.correctanswer + "]";
-                document.getElementById("wrongAnswers").appendChild(questionHeading);
+                document.getElementById("Choices").appendChild(questionHeading);
                 
                 question.answers.forEach(answer => {
                     var answerButton = document.createElement("button");
                     answerButton.innerText = answer;
-                    document.getElementById("wrongAnswers").appendChild(answerButton);
+                    document.getElementById("Choices").appendChild(answerButton);
                     answerButton.addEventListener("click", function() { question.userchoice = answer; answerButton.style.background = "gray"; });
                 });               
             });*/
@@ -56,22 +56,22 @@
             GenerateQuestion();
 
             function GenerateQuestion(){
-                document.getElementById("wrongAnswers").innerHTML = "";
+                document.getElementById("Choices").innerHTML = "";
                 var question = questions[current];
 
                 var questionHeading = document.createElement("h3");
                 questionHeading.innerText = question.question + "[" + question.correctanswer + "]";
-                document.getElementById("wrongAnswers").appendChild(questionHeading);
+                document.getElementById("Choices").appendChild(questionHeading);
 
                 question.answers.forEach(answer => {
                     var answerButton = document.createElement("button");
                     answerButton.innerText = answer;
-                    document.getElementById("wrongAnswers").appendChild(answerButton);
+                    document.getElementById("Choices").appendChild(answerButton);
 
                     answerButton.addEventListener("click", function() { 
                         question.userchoice = answer;
                         if(current < questions.length-1){
-                            GenerateQuestion(current++);
+                            GenerateQuestion(current++);                           
                         } else {
                             Evaluate();
                         }  
