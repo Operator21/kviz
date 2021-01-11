@@ -6,7 +6,6 @@
     </head>
     <body>
         <div id="wrongAnswers"></div>
-        <button onclick="Evaluate()">Zhodnotit</button>
         <div id="wrong"></div>
         <script>
             function Question(question, answers, correctanswer) {
@@ -38,7 +37,7 @@
                 new Question("Descendet představuje?", ["Naši mentalitu", "Naši osobnost", "Naši představivost", "Naši budoucnost"], "Naši osobnost")
             ];
 
-            questions.forEach(question => {
+            /*questions.forEach(question => {
                 //console.log(question.question);
                 var questionHeading = document.createElement("h3");
                 questionHeading.innerText = question.question + "[" + question.correctanswer + "]";
@@ -48,18 +47,49 @@
                     var answerButton = document.createElement("button");
                     answerButton.innerText = answer;
                     document.getElementById("wrongAnswers").appendChild(answerButton);
-                    answerButton.addEventListener("click", function() { question.ChangeAnswer(answer); answerButton.style.background = "gray"; });
+                    answerButton.addEventListener("click", function() { question.userchoice = answer; answerButton.style.background = "gray"; });
                 });               
-            });
+            });*/
 
-            function Evaluate(){
+            var current = 0;
+            var score = 0;
+            GenerateQuestion();
+
+            function GenerateQuestion(){
+                document.getElementById("wrongAnswers").innerHTML = "";
+                var question = questions[current];
+
+                var questionHeading = document.createElement("h3");
+                questionHeading.innerText = question.question + "[" + question.correctanswer + "]";
+                document.getElementById("wrongAnswers").appendChild(questionHeading);
+
+                question.answers.forEach(answer => {
+                    var answerButton = document.createElement("button");
+                    answerButton.innerText = answer;
+                    document.getElementById("wrongAnswers").appendChild(answerButton);
+
+                    answerButton.addEventListener("click", function() { 
+                        question.userchoice = answer;
+                        if(current < questions.length-1){
+                            GenerateQuestion(current++);
+                        } else {
+                            Evaluate();
+                        }  
+                    })
+                });
+            }
+
+            function Evaluate(){                
                 questions.forEach(question => {
                     if(question.correctanswer != question.userchoice){
                         var wrong = document.createElement("h4");
                         wrong.innerText = "Otazka: " + question.question + " | Spravna odpoved: " + question.correctanswer + " | Uzivatelova odpoved " + question.userchoice;
                         document.getElementById("wrong").appendChild(wrong);
+                    } else {
+                        score++;
                     }
                 });
+                alert("Finalni vysledek: " + score);
             }
         </script>
     </body>
