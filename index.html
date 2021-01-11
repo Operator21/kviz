@@ -1,0 +1,66 @@
+<html lang="cs">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>       
+    </head>
+    <body>
+        <div id="wrongAnswers"></div>
+        <button onclick="Evaluate()">Zhodnotit</button>
+        <div id="wrong"></div>
+        <script>
+            function Question(question, answers, correctanswer) {
+                this.question = question;
+                this.answers = answers;
+                this.correctanswer = correctanswer;
+                this.userchoice = null;
+                this.ChangeAnswer = function(answer){
+                    this.userchoice = answer;
+                }
+            }
+
+            //Auto generate questions
+            /*var questions = [];
+            for(var x = 0; x < 3; x++){
+                var answers = [];
+                var generated = Math.floor(Math.random() * 5) + 2;
+                for(var y = 0; y < generated; y++){
+                    answers.push(Math.floor(Math.random() * 10) + 5);
+                }
+                questions.push(new Question("Tohle je otazka?", answers, answers[0]));
+            }*/
+            questions = [
+                new Question("Jaké znamení je jako první?",["Beran","Byk","Kozoroh","Blizenci"],"Beran"),
+                new Question("Co označuje ascendent?", ["Znamení", "Polohu slunce", "Hodinu narození", "Polohu dómů"], "Hodinu narození"),
+                new Question("Opak ascendentu je?", ["Inscendent", "Descendent","Unscendent", "Downscendent"], "Descendent"),
+                new Question("Ascendent v Beranu je descendent v?", ["Býků", "Blíženci", "Kozorohu", "Váhách"], "Váhách"),
+                new Question("Ascendent ve Lvu je descendent v?", ["Vodnáři", "Rybě", "Blíženci", "Štíru"], "Vodnáři"),
+                new Question("Descendet představuje?", ["Naši mentalitu", "Naši osobnost", "Naši představivost", "Naši budoucnost"], "Naši osobnost")
+            ];
+
+            questions.forEach(question => {
+                //console.log(question.question);
+                var questionHeading = document.createElement("h3");
+                questionHeading.innerText = question.question + "[" + question.correctanswer + "]";
+                document.getElementById("wrongAnswers").appendChild(questionHeading);
+                
+                question.answers.forEach(answer => {
+                    var answerButton = document.createElement("button");
+                    answerButton.innerText = answer;
+                    document.getElementById("wrongAnswers").appendChild(answerButton);
+                    answerButton.addEventListener("click", function() { question.ChangeAnswer(answer); answerButton.style.background = "gray"; });
+                });               
+            });
+
+            function Evaluate(){
+                questions.forEach(question => {
+                    if(question.correctanswer != question.userchoice){
+                        var wrong = document.createElement("h4");
+                        wrong.innerText = "Otazka: " + question.question + " | Spravna odpoved: " + question.correctanswer + " | Uzivatelova odpoved " + question.userchoice;
+                        document.getElementById("wrong").appendChild(wrong);
+                    }
+                });
+            }
+        </script>
+    </body>
+</html>
